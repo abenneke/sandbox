@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                       http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+   <bean id="testDataSource" class="bitronix.tm.resource.jdbc.PoolingDataSource"
+      init-method="init" destroy-method="close">
+      <property name="uniqueName" value="testDataSource" />
+      <property name="maxPoolSize" value="5" />
+      <property name="className" value="org.h2.jdbcx.JdbcDataSource" />
+      <property name="driverProperties">
+         <props>
+            <prop key="URL">jdbc:h2:mem:transactionTest;DB_CLOSE_DELAY=60
+            </prop>
+            <prop key="user">sa</prop>
+            <prop key="password">sa</prop>
+         </props>
+      </property>
+
+      <!-- required for Hibernate database initialization and SUPPORTS transactions -->
+      <property name="allowLocalTransactions" value="true" />
+   </bean>
+
+   <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+      <constructor-arg ref="testDataSource" />
+   </bean>
+
+   <bean id="testEntityManager"
+      class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+      <property name="dataSource">
+         <!-- Question C: This seems unnecessary complex configuration? Is there a simpler way? -->
+         <bean
+            class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+            <constructor-arg ref="testDataSource" />
+         </bean>
+      </property>
+      <property name="persistenceUnitName" value="TransactionTest" />
+      <property name="persistenceXmlLocation"
+         value="classpath:test/TransactionTest-persistence.xml" />
+      <property name="jpaVendorAdapter">
+         <bean
+            class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+            <property name="generateDdl" value="true" />
+            <property name="databasePlatform" value="org.hibernate.dialect.H2Dialect" />
+         </bean>
+      </property>
+      <!-- Spring/Hibernate select these automatically: 
+      <property name="jpaDialect">
+         <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+      </property>
+      <property name="jpaPropertyMap">
+         <map>
+            <entry key="hibernate.transaction.jta.platform"
+               value="org.hibernate.service.jta.platform.internal.BitronixJtaPlatform" />
+            <entry key="hibernate.current_session_context_class"
+               value="jta" />
+         </map>
+      </property>
+      <property name="persistenceProvider">
+         <bean class="org.hibernate.jpa.HibernatePersistenceProvider" />
+      </property>
+      -->
+   </bean>
+
+   <bean id="BTMTransactionManager" class="bitronix.tm.TransactionManagerServices"
+      factory-method="getTransactionManager" destroy-method="shutdown" />
+
+   <bean id="transactionManager"
+      class="org.springframework.transaction.jta.JtaTransactionManager">
+      <property name="transactionManager" ref="BTMTransactionManager" />
+      <property name="userTransaction" ref="BTMTransactionManager" />
+   </bean>
+
+</beans>
