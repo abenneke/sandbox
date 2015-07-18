@@ -6,6 +6,12 @@
    <persistence-unit name="test">
       <class>test.unidirectional.UnidirectionalParent</class>
       <class>test.unidirectional.UnidirectionalChild</class>
+      <class>test.bidirectionaloptional.BidirectionalOptionalParent</class>
+      <class>test.bidirectionaloptional.BidirectionalOptionalChild</class>
+      <class>test.bidirectionalmandatory.BidirectionalMandatoryParent</class>
+      <class>test.bidirectionalmandatory.BidirectionalMandatoryChild</class>
+      <class>test.bidirectionaloptimisticlock.BidirectionalOptimisticLockParent</class>
+      <class>test.bidirectionaloptimisticlock.BidirectionalOptimisticLockChild</class>
       <exclude-unlisted-classes>true</exclude-unlisted-classes>
    </persistence-unit>
 </persistence>
