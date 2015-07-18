@@ -17,6 +17,11 @@ public class BidirectionalMandatoryParent extends BaseParentEntity {
 
 	// Not mappedBy to make this the owner of the relation
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	// Note: Do not set (redundant) "nullable = false" here,
+	// the Hibernate mapping will try to create two "parent_id" columns:
+	// MappingException: Repeated column in mapping
+	// for entity: test.bidirectionalmandatory.BidirectionalMandatoryChild
+	/// column: parent_id (should be mapped with insert="false" update="false")
 	@JoinColumn(name = "parent_id")
 	public Set<BidirectionalMandatoryChild> getChildren() {
 		return children;
