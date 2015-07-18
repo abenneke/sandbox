@@ -25,12 +25,4 @@ public class UnidirectionalParent extends BaseEntity {
 		this.children = children;
 	}
 
-	   @Override
-	   public void setVersion(final int version)
-	   {
-	      new Throwable(String.valueOf(version)).printStackTrace();
-	      super.setVersion(version);
-	   }
-
-
 }
