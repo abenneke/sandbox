@@ -145,4 +145,79 @@ public class ChildRemoveTest {
 		removeChild(false, true, true);
 	}
 
+	protected void detachedRemoveChild(boolean clearParent) {
+		DataSource dataSource = createDataSource();
+		EntityManagerFactory emf = createEntityManagerFactory(dataSource);
+		EntityManager em = emf.createEntityManager();
+
+		try {
+			em.getTransaction().begin();
+
+			// create a parent with two children
+			Parent parent = new Parent();
+			parent.setId("parent");
+			HashSet<Child> children = new HashSet<>();
+
+			Child first = new Child();
+			first.setId("first");
+			first.setParent(parent);
+			children.add(first);
+
+			Child second = new Child();
+			second.setId("second");
+			second.setParent(parent);
+			children.add(second);
+
+			parent.setChildren(children);
+
+			// save the parent
+			em.persist(parent);
+			em.flush();
+
+			// and detach it
+			em.detach(parent);
+
+			// remove one child
+			final Child childToRemove = parent.getChildren().iterator().next();
+			parent.getChildren().remove(childToRemove);
+			if (clearParent) {
+				childToRemove.setParent(null);
+			}
+
+			// merge the changed parent back
+			parent = em.merge(parent);
+
+			// the child should still be gone now?
+			assertEquals(1, parent.getChildren().size());
+
+			// save the change
+			em.flush();
+
+			// reset the entity manager to drop all cached entites
+			em.clear();
+
+			// query the database to check if the child is really gone
+			final CriteriaBuilder cb = em.getCriteriaBuilder();
+			final CriteriaQuery<Parent> query = cb.createQuery(Parent.class);
+			final Root<Parent> from = query.from(Parent.class);
+			query.where(cb.equal(from.<String> get("id"), "parent"));
+			final Parent loadedParent = em.createQuery(query).getSingleResult();
+			assertEquals(1, loadedParent.getChildren().size());
+
+		} finally {
+			em.getTransaction().rollback();
+			em.close();
+		}
+	}
+
+	@Test
+	public void testDetachedRemoveChildNoClearParent() {
+		detachedRemoveChild(false);
+	}
+
+	@Test
+	public void testDetachedRemoveChildClearParent() {
+		detachedRemoveChild(true);
+	}
+
 }

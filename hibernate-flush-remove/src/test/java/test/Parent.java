@@ -18,7 +18,6 @@ public class Parent extends BaseEntity {
 	}
 
 	public void setChildren(Set<Child> children) {
-		System.out.println(children.getClass().getName());
 		this.children = children;
 	}
 
