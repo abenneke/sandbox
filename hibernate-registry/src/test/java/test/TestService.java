@@ -14,7 +14,8 @@ public class TestService implements ServiceRegistryAwareService, Service {
 		}
 	}
 
-	private boolean initialized;
+	// volatile to make sure, every thread sees the most current value
+	private volatile boolean initialized;
 
 	@Override
 	public void injectServices(ServiceRegistryImplementor serviceRegistry) {
