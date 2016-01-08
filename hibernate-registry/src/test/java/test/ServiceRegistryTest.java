@@ -59,7 +59,7 @@ public class ServiceRegistryTest {
 			};
 		});
 
-		// there should be created only one instance per registry?
+		// there should be created only one instance per registry (?)
 		Set<Integer> uniqueServices = new HashSet<Integer>();
 		for (Future<Integer> service : serviceIdentity) {
 			uniqueServices.add(service.get());
@@ -75,8 +75,8 @@ public class ServiceRegistryTest {
 		Future<Boolean>[] serviceInitialized = runParallel(count, new Callable<Boolean>() {
 			public Boolean call() throws InterruptedException {
 				TestService service = registry.getService(TestService.class);
-				// remember if the service was initialized when received from
-				// registry
+				// remember if the service was initialized
+				// when received from registry
 				return Boolean.valueOf(service.isInitialized());
 			};
 		});
