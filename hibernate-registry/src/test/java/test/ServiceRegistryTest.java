@@ -64,7 +64,7 @@ public class ServiceRegistryTest {
 		for (Future<Integer> service : serviceIdentity) {
 			uniqueServices.add(service.get());
 		}
-		assertEquals(1, uniqueServices.size());
+		assertEquals("number of different service instances", 1, uniqueServices.size());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ServiceRegistryTest {
 				initialized++;
 			}
 		}
-		assertEquals(count, initialized);
+		assertEquals("number of initialized service instances", count, initialized);
 	}
 
 }
