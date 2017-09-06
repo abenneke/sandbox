@@ -73,6 +73,15 @@ public class QueryParameterTest {
 	}
 
 	@Test
+	public void queryUserTypePrimitiveBoolean() {
+		testQuery(em -> {
+			Query query = em.createQuery("select e from TestEntity e where e.userTypePrimitiveBoolean = :value");
+			query.setParameter("value", Boolean.TRUE);
+			return query;
+		});
+	}
+
+	@Test
 	public void criteriaEqualObjectBoolean() {
 		testQuery(em -> {
 			CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -95,6 +104,17 @@ public class QueryParameterTest {
 	}
 
 	@Test
+	public void criteriaEqualUserTypePrimitiveBoolean() {
+		testQuery(em -> {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<TestEntity> query = cb.createQuery(TestEntity.class);
+			Root<TestEntity> root = query.from(TestEntity.class);
+			query.where(cb.equal(root.get(TestEntity_.userTypePrimitiveBoolean), Boolean.TRUE));
+			return em.createQuery(query);
+		});
+	}
+
+	@Test
 	public void criteriaIsTrueObjectBoolean() {
 		testQuery(em -> {
 			CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -112,6 +132,17 @@ public class QueryParameterTest {
 			CriteriaQuery<TestEntity> query = cb.createQuery(TestEntity.class);
 			Root<TestEntity> root = query.from(TestEntity.class);
 			query.where(cb.isTrue(root.get(TestEntity_.primitiveBoolean)));
+			return em.createQuery(query);
+		});
+	}
+
+	@Test
+	public void criteriaIsTrueUserTypePrimitiveBoolean() {
+		testQuery(em -> {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<TestEntity> query = cb.createQuery(TestEntity.class);
+			Root<TestEntity> root = query.from(TestEntity.class);
+			query.where(cb.isTrue(root.get(TestEntity_.userTypePrimitiveBoolean)));
 			return em.createQuery(query);
 		});
 	}

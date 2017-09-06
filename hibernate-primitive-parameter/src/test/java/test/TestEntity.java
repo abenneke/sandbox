@@ -31,13 +31,23 @@ public class TestEntity {
 
 	private boolean primitiveBoolean;
 
-	@Type(type = "test.YNPrimitiveBooleanUserType")
 	public boolean isPrimitiveBoolean() {
 		return primitiveBoolean;
 	}
 
 	public void setPrimitiveBoolean(boolean primitiveBoolean) {
 		this.primitiveBoolean = primitiveBoolean;
+	}
+
+	private boolean userTypePrimitiveBoolean;
+
+	@Type(type = "test.YNPrimitiveBooleanUserType")
+	public boolean isUserTypePrimitiveBoolean() {
+		return userTypePrimitiveBoolean;
+	}
+
+	public void setUserTypePrimitiveBoolean(boolean userTypePrimitiveBoolean) {
+		this.userTypePrimitiveBoolean = userTypePrimitiveBoolean;
 	}
 
 }
