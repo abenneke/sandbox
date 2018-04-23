@@ -23,4 +23,9 @@ public class Model {
 		return data;
 	}
 
+	@Valid
+	public Object getDataAsObject() {
+		return data;
+	}
+
 }

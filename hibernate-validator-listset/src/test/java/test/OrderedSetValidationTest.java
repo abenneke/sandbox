@@ -1,11 +1,9 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -28,19 +26,15 @@ public class OrderedSetValidationTest {
 				.messageInterpolator(new ParameterMessageInterpolator())//
 				.buildValidatorFactory().getValidator();
 		Set<ConstraintViolation<Object>> results = validator.validate(model);
-		assertEquals(2, results.size());
 
-		List<String> expectedPaths = Arrays.asList(//
-				"dataAsList[0].notNullProperty", //
+		String paths = results.stream().map(c -> c.getPropertyPath().toString())//
+				.sorted().collect(Collectors.joining(", "));
+		
+		assertEquals(
+				"dataAsList[0].notNullProperty, " + //
 				// the implementation still allows index based access:
-				"dataAsSet[0].notNullProperty");
-
-		for (ConstraintViolation<Object> constraint : results) {
-			String path = constraint.getPropertyPath().toString();
-			if (!expectedPaths.contains(path)) {
-				fail("Found unexpected path " + path);
-			}
-		}
+				"dataAsObject[0].notNullProperty, " + 
+						"dataAsSet[0].notNullProperty"	, paths);
 	}
 
 }
