@@ -2,6 +2,7 @@ package test;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.RandomAccess;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -26,6 +27,12 @@ public class Model {
 
 	@Valid
 	public Object getDataAsObject() {
+		return data;
+	}
+	
+	
+	@Valid
+	public RandomAccess getDataAsRandomAccess() {
 		return data;
 	}
 
