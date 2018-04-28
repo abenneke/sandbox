@@ -29,7 +29,9 @@ public class OrderedSetValidationTest {
 
 		assertEquals("dataAsList[0].notNullProperty, " + //
 		// the implementation still allows index based access:
-				"dataAsObject[0].notNullProperty, " + "dataAsSet[0].notNullProperty", paths);
+				"dataAsObject[0].notNullProperty, " //
+				+ "dataAsSerializable[0].notNullProperty, " //
+				+ "dataAsSet[0].notNullProperty", paths);
 	}
 
 	private Configuration<?> baseConfiguration() {

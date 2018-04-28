@@ -1,5 +1,6 @@
 package test;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,11 @@ public class Model {
 
 	@Valid
 	public Object getDataAsObject() {
+		return data;
+	}
+
+	@Valid
+	public Serializable getDataAsSerializable() {
 		return data;
 	}
 
