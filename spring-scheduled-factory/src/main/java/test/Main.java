@@ -2,13 +2,14 @@ package test;
 
 import org.springframework.context.annotation.ConfigurationClassPostProcessor;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.scheduling.annotation.SchedulingConfiguration;
 
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		GenericApplicationContext ctx = new GenericApplicationContext();
 		ctx.registerBean(ConfigurationClassPostProcessor.class);
-		ctx.registerBean(TestSchedulingConfiguration.class);
+		ctx.registerBean(SchedulingConfiguration.class);
 		
 		ctx.registerBean(ComponentConfiguration.class);
 		ctx.refresh();

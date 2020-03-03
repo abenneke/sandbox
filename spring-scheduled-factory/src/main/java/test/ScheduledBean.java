@@ -15,9 +15,4 @@ public class ScheduledBean {
 		System.out.println(name + ".testScheduled");
 	}
 
-	@Override
-	public String toString() {
-		return name;
-	}
-	
 }
