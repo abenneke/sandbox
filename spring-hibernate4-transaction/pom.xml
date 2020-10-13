@@ -15,7 +15,7 @@
       <spring.version>4.1.7.RELEASE</spring.version>
       <h2.version>1.4.187</h2.version>
       <btm.version>2.1.4</btm.version>
-      <junit.version>4.12</junit.version>
+      <junit.version>4.13.1</junit.version>
    </properties>
 
    <dependencies>
